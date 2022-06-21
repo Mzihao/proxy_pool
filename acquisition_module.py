@@ -1,4 +1,15 @@
 # -*- coding:UTF-8 -*-
+
+"""
+获取模块的逻辑相对简单，首先需要定义一个 Crawler 来从各大网站抓取代理。
+
+为了实现灵活，在这里我们将获取代理的一个个方法统一定义一个规范，
+如统一定义以 crawl 开头，这样扩展的时候只需要添加 crawl 开头的方法即可。
+这些方法都定义成了生成器，通过 yield 返回一个个代理。
+get_proxies()方法，将所有以 crawl 开头的方法调用一遍，获取每个方法返回的代理并组合成列表形式返回。 
+"""
+
+
 import json
 from lxml import etree
 import requests
