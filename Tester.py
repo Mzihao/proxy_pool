@@ -4,7 +4,7 @@ from botocore import exceptions
 import time
 import asyncio
 
-VALID_STATUS_CODES = [200]
+VALID_STATUS_CODES = [200]  # 成功响应状态码
 TEST_URL = 'https://www.baidu.com'  # 检测的站点
 BATCH_TEST_SIZE = 100
 
@@ -29,7 +29,7 @@ class Tester(object):
                 if isinstance(proxy, bytes):
                     proxy = proxy.decode('utf-8')
                 real_proxy = 'http://' + proxy
-                print('正在测试',proxy)
+                print('正在测试', proxy)
                 async with session.get(TEST_URL, proxy=real_proxy, timeout=15) as response:
                     if response.status in VALID_STATUS_CODES:
                         self.redis.max(proxy)
@@ -51,12 +51,12 @@ class Tester(object):
             proxies = self.redis.all()
             loop = asyncio.get_event_loop()
             for i in range(0, len(proxies), BATCH_TEST_SIZE):
-                test_proxies = proxies[i:i+BATCH_TEST_SIZE]
+                test_proxies = proxies[i:i + BATCH_TEST_SIZE]
                 tasks = [self.test_single_proxy(proxy) for proxy in test_proxies]
                 loop.run_until_complete(asyncio.wait(tasks))
                 time.sleep(5)
         except Exception as e:
-            print('测试出现错误',e.args)
+            print('测试出现错误', e.args)
 
 
 if __name__ == '__main__':

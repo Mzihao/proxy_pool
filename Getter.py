@@ -12,7 +12,8 @@ from acquisition_module import Crawler
 # 表示代理池的最大数量
 POOL_UPPER_THRESHOLD = 10000
 
-class Getter():
+
+class Getter:
     def __init__(self):
         self.redis = RedisClient()
         self.crawler = Crawler()
